@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title file list demo with jade
+  body
+    ul
+      each file in file_list
+        li
+          a name is #{file.name} size is #{file.size}
