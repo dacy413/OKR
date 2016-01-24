@@ -8,6 +8,8 @@ parse = require "co-busboy"
 path = require "path"
 os = require "os"
 Promise = require "bluebird"
+thunkify = require "thunkify"
+_ = require "underscore"
 # fs.readdir = Promise.promisify fs.readdir
 
 route = router()
@@ -45,10 +47,14 @@ route.get "/file_list",(next)->
     upload_time:1,
     size:2,
     md5:"3"  
-  console.log "call here"
-  fs.readdir file_path,(error,files)=>
-    console.log "files ",files
-    this.body = yield render("file_list.jade",{file_list:[fake1,fake2]});
+  readdir = thunkify(fs.readdir) 
+  file_list = yield readdir(file_path)
+  console.log "file_list ",file_list
+  file_map = _.map file_list,(file)->
+    return {name:file}
+  # file_map = _.indexBy(file_list,_.constant("name"))
+  console.log "file_map ",file_map
+  this.body = yield render("file_list.jade",{file_list:file_map})
 
 app.use (route.routes())
 app.use (route.allowedMethods())
