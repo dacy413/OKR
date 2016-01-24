@@ -1,5 +1,5 @@
 # OKR 个人工具集
-## 私人云盘
+## 私有云盘
 * 使用gulp-nodemeon替换gulp-develop-server OK
 * 整理gulp的Task 清晰的task OK
 * 使browser-sync可以正常忽略上传的文件
